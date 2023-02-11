@@ -1,0 +1,47 @@
+﻿@using System.IO
+@model LocadoraFilmes.Models.FilmeModel
+
+@{
+    ViewData["Title"] = "Edição de Filme";
+    var imagePath = @"~/capafilme/1.png";
+}
+
+<h4>Editando Filme</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="Titulo" class="control-label"></label>
+                <input asp-for="Titulo" class="form-control" />
+                <span asp-validation-for="Titulo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Sinopse" class="control-label"></label>
+                <textarea asp-for="Sinopse" class="form-control"></textarea>
+                <span asp-validation-for="Sinopse" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IdadeClassificacao" class="control-label"></label>
+                <input asp-for="IdadeClassificacao" class="form-control" />
+                <span asp-validation-for="IdadeClassificacao" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <img src="@Url.Content(@imagePath)" /> @*todo: Capa*@
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Alterar" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
