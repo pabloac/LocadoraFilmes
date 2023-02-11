@@ -22,8 +22,6 @@
 
   <ItemGroup>
     <Folder Include="capafilme\" />
-    <Folder Include="Views\Locacao\" />
-    <Folder Include="Views\Usuario\" />
   </ItemGroup>
 
   <ItemGroup>

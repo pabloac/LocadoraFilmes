@@ -1,0 +1,55 @@
+﻿@model LocadoraFilmes.Models.AluguelModel
+
+@{
+    ViewData["Title"] = "Alugar Filme";
+}
+
+<h4>Escolha o Filme e Selecione o Cliente</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <label>Filme</label>
+            <select name="FilmeId" class="form-control">
+                <option value="" selected="selected">[Selecione]</option>
+                @foreach (var item in Model.filmesSelecionar)
+                {
+                    <option value="@item.Id">@item.Titulo</option>
+                }
+            </select>
+            <span asp-validation-for="FilmeId" class="text-danger"></span>
+            <label>Cliente</label>
+            <select name="ClienteId" class="form-control">
+                <option value="" selected="selected">[Selecione]</option>
+                @foreach (var item in Model.clientesSelecionar)
+                {
+                    <option value="@item.Id">@item.Nome</option>
+                }
+            </select>
+            <span asp-validation-for="ClienteId" class="text-danger"></span>
+            <div class="form-group">
+                <label asp-for="DtAluguel" class="control-label"></label>
+                <input asp-for="DtAluguel" class="form-control" />
+                <span asp-validation-for="DtAluguel" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DtPrevisaoEntrega" class="control-label"></label>
+                <input asp-for="DtPrevisaoEntrega" class="form-control" />
+                <span asp-validation-for="DtPrevisaoEntrega" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

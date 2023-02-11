@@ -9,6 +9,7 @@ namespace LocadoraFilmes.Data
         public DbSet<ClienteModel> Clientes { get; set; }
         public DbSet<FilmeModel> Filmes { get; set; }
         public DbSet<AluguelModel> Alugueis { get; set; }
+        public DbSet<UsuarioModel> Usuarios { get; set; }
 
         public BancoContext(DbContextOptions<BancoContext> options) : base(options)
         {

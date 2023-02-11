@@ -9,10 +9,14 @@ namespace LocadoraFilmes.Controllers
     public class AluguelController : Controller
     {
         private readonly IAluguelRepositorio _aluguelRepositorio;
+        private readonly IClienteRepositorio _clienteRepositorio;
+        private readonly IFilmeRepositorio _filmeRepositorio;
 
-        public AluguelController(IAluguelRepositorio aluguelRepositorio)
+        public AluguelController(IAluguelRepositorio aluguelRepositorio, IClienteRepositorio clienteRepositorio, IFilmeRepositorio filmeRepositorio)
         {
             _aluguelRepositorio = aluguelRepositorio;
+            _clienteRepositorio = clienteRepositorio;
+            _filmeRepositorio = filmeRepositorio;
         }
 
 
@@ -34,7 +38,13 @@ namespace LocadoraFilmes.Controllers
         // GET: AluguelController/Create
         public ActionResult Create()
         {
-            return View();
+
+            AluguelModel model = new AluguelModel();
+            model.clientesSelecionar = _clienteRepositorio.GetAll();
+            model.filmesSelecionar = _filmeRepositorio.GetAll();
+
+
+            return View(model);
         }
 
         // POST: AluguelController/Create
@@ -47,7 +57,7 @@ namespace LocadoraFilmes.Controllers
 
 
 
-                //_aluguelRepositorio.Insert(objeto);
+                _aluguelRepositorio.Insert(objeto);
 
                 return RedirectToAction(nameof(Index));
             }

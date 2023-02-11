@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace LocadoraFilmes.Models
@@ -7,7 +8,7 @@ namespace LocadoraFilmes.Models
     {
         public long Id { get; set; }
 
-        //public long ClienteId { get; set; }
+        
 
         [Display(Name = "Cliente")]
         public ClienteModel Cliente { get; set; }
@@ -20,5 +21,15 @@ namespace LocadoraFilmes.Models
 
         [Display(Name = "Entrega em")]
         public DateTime? DtPrevisaoEntrega { get; set; }
+
+
+        public List<ClienteModel> clientesSelecionar = new List<ClienteModel>();
+        public List<FilmeModel> filmesSelecionar = new List<FilmeModel>();
+
+        [Required]
+        public long ClienteId { get; set; }
+        [Required]
+        public long FilmeId { get; set; }
+
     }
 }
