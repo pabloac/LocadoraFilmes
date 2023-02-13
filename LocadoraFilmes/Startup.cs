@@ -33,6 +33,7 @@ namespace LocadoraFilmes
             services.AddScoped<IClienteRepositorio, ClienteRepositorio>();
             services.AddScoped<IFilmeRepositorio, FilmeRepositorio>();
             services.AddScoped<IAluguelRepositorio, AluguelRepositorio>();
+            services.AddScoped<IUsuarioRepositorio, UsuarioRepositorio>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

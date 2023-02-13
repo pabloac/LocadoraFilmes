@@ -44,9 +44,16 @@ namespace LocadoraFilmes.Controllers
         {
             try
             {
-                _clienteRepositorio.Insert(objeto);
+                if (ModelState.IsValid)
+                {
+                    _clienteRepositorio.Insert(objeto);
 
-                return RedirectToAction(nameof(Index));
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    return View(objeto);
+                }
             }
             catch
             {

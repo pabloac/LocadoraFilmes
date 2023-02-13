@@ -21,11 +21,16 @@ namespace LocadoraFilmes.Models
         }
 
         public long Id { get; set; }
+        [Required(ErrorMessage = "Nome Obrigatório")]
         public string Nome { get; set; }
+        [Required(ErrorMessage = "Email Obrigatório")]
+        [EmailAddress(ErrorMessage = "Email Inválido")]
         public string Email { get; set; }
         public string Celular { get; set; }
         
         [Display(Name = "Data de Nascimento")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = false)]
         public DateTime? DtNascimento { get; set; }
     }
 }
