@@ -45,5 +45,15 @@ namespace LocadoraFilmes.Repositorio
             _bancoContext.SaveChanges();
             return objeto;
         }
+
+        public bool CheckNameExists(string nome)
+        {
+            ClienteModel model = _bancoContext.Clientes.FirstOrDefault(x => x.Nome.ToLower().Contains(nome));
+
+            if (model == null)
+                return false;
+            return true;
+        }
+
     }
 }

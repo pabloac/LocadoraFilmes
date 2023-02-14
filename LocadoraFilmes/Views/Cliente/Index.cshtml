@@ -40,6 +40,15 @@ document.getElementById("lblNomeCliente").innerHTML = nome;
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+
+@if (TempData["Mensagem"] != null)
+{
+    <div class="alert alert-info" role="alert">
+        <button type="button" class="btn btn-info btn-sm close-info" arial-label="Close">X</button>
+        @TempData["Mensagem"]
+    </div>
+}
+
 <table class="table">
     <thead>
         <tr>

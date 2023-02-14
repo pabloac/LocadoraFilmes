@@ -21,11 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="capafilme\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="capafilme\1.png">
+    <None Include="wwwroot\capasfilmes\1.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

@@ -69,3 +69,18 @@ body {
   white-space: nowrap;
   line-height: 60px; /* Vertically center the text there */
 }
+
+.close-info {
+    position: absolute;
+    right: -10px;
+    top: -15px;
+    border-radius: 15px;
+    width: 30px;
+    height: 30px;
+}
+
+.alert-info {
+    -webkit-transition: opacity 6.5s; /* Safari */
+    transition: opacity 6.5s;
+    opacity: 1;
+}

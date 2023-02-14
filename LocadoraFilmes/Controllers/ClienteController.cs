@@ -34,6 +34,7 @@ namespace LocadoraFilmes.Controllers
         // GET: ClienteController/Create
         public ActionResult Create()
         {
+            ViewBag.Mensagem = "Dica: Evite problemas no cadastro e preencha os campos email e telefone corretamente ";
             return View();
         }
 
@@ -44,9 +45,14 @@ namespace LocadoraFilmes.Controllers
         {
             try
             {
+                if (_clienteRepositorio.CheckNameExists(objeto.Nome))
+                    ModelState.AddModelError("name", string.Concat(objeto.Nome, " já se encontra em nossos cadastros"));
+
                 if (ModelState.IsValid)
                 {
                     _clienteRepositorio.Insert(objeto);
+
+                    TempData["Mensagem"] = string.Concat("Cliente ", objeto.Nome, " cadastrado com sucesso!");
 
                     return RedirectToAction(nameof(Index));
                 }
@@ -57,7 +63,8 @@ namespace LocadoraFilmes.Controllers
             }
             catch
             {
-                return View();
+                TempData["Mensagem"] = "Erro no cadastro";
+                return RedirectToAction(nameof(Index));
             }
         }
 

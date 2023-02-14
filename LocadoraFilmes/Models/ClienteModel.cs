@@ -1,14 +1,16 @@
-﻿using System;
+﻿using LocadoraFilmes.Data;
+using LocadoraFilmes.Repositorio;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace LocadoraFilmes.Models
 {
     public class ClienteModel
-    {
-
+    {   
         public ClienteModel()
         {
-
+            
         }
 
         public ClienteModel(long id, string nome, string email, string celular, DateTime? dtNascimento)
@@ -32,5 +34,7 @@ namespace LocadoraFilmes.Models
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = false)]
         public DateTime? DtNascimento { get; set; }
+
+
     }
 }

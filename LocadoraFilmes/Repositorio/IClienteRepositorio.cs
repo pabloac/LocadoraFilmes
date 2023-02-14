@@ -10,5 +10,7 @@ namespace LocadoraFilmes.Repositorio
         ClienteModel Delete(ClienteModel objeto);
         List<ClienteModel> GetAll();
         ClienteModel Get(int id);
+
+        bool CheckNameExists(string nome);
     }
 }

@@ -2,3 +2,8 @@
 // for details on configuring this project to bundle and minify static web assets.
 
 // Write your JavaScript code.
+
+$('.close-info').click(function () {
+    $('.alert').hide('hide');
+});
+
