@@ -1,8 +1,11 @@
 ﻿using LocadoraFilmes.Models;
 using LocadoraFilmes.Repositorio;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
+using System.IO;
 
 namespace LocadoraFilmes.Controllers
 {
@@ -10,10 +13,14 @@ namespace LocadoraFilmes.Controllers
     {
 
         private readonly IFilmeRepositorio _filmeRepositorio;
+        private readonly IConfiguration _configuration;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public FilmeController(IFilmeRepositorio filmeRepositorio)
+        public FilmeController(IFilmeRepositorio filmeRepositorio, IConfiguration configuration, IWebHostEnvironment webHostEnvironment)
         {
             _filmeRepositorio = filmeRepositorio;
+            _configuration = configuration;
+            _webHostEnvironment = webHostEnvironment;
         }
 
 
@@ -70,9 +77,48 @@ namespace LocadoraFilmes.Controllers
         {
             try
             {
-                _filmeRepositorio.Update(objeto);
+                string dirCapas = _configuration.GetSection("AppSettings").GetValue<string>("IMAGENS_CAPAS");
+                string dirServer = Path.Combine(_webHostEnvironment.WebRootPath, dirCapas);
 
-                return RedirectToAction(nameof(Index));
+
+
+                if (objeto.FotoCapa != null)
+                {
+                    long id = objeto.Id;//Nome do Arquivo
+
+                    //1- Checar Extensão (no momento apenas PNG)
+                    
+                    var extensao = objeto.FotoCapa.FileName.Split('.')[1];
+                    if (extensao.ToLower() != "png")
+                    {
+                        ModelState.AddModelError("name", string.Concat("Extensão de arquivo incorreta (somente PNG)"));
+                    }
+                    else
+                    {
+                        //Continuar Upload
+                        using (var stream = System.IO.File.Create(dirServer + "/teste.png"))
+                        {
+                            objeto.FotoCapa.CopyTo(stream);
+                        }
+
+                    }
+
+
+
+                }
+
+
+                if (ModelState.IsValid)
+                {
+
+                    _filmeRepositorio.Update(objeto);
+
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    return View(objeto);
+                }
             }
             catch
             {

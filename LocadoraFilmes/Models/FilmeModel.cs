@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Http;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LocadoraFilmes.Models
 {
@@ -14,6 +16,11 @@ namespace LocadoraFilmes.Models
 
         [Display(Name = "Classificação")]
         public int IdadeClassificacao { get; set; }
+
+
+        [NotMapped]
+        [Display(Name = "Foto da Capa")]
+        public IFormFile FotoCapa { get; set; }
 
 
     }
