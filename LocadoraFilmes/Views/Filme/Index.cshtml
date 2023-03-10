@@ -6,6 +6,24 @@
 
 <h1>Index</h1>
 
+<script>
+
+    function ModalDetails(Id, Titulo, IdadeClassificacao) {
+
+        document.getElementById("lblNomeFilme").innerHTML = Titulo;
+        document.getElementById("lblClassificacao").innerHTML = IdadeClassificacao;
+        //document.getElementById("lblSinopse").innerHTML = Sinopse;
+        
+        //todo: Chamar um método no controller via AJAX pra poder dizer se a capa existe ou se usa a imagem padrão
+        //todo: Ajax também pra trazer o HTML completo da sinopse
+
+
+
+        $('#modalViewDetais').modal();
+        return false;
+    }
+</script>
+
 <p>
     <a asp-action="Create">Create New</a>
 </p>
@@ -38,10 +56,60 @@
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <button type="button" class="btn" data-bs-toggle="modal" onclick="return ModalDetails('@item.Id', '@item.Titulo', '@item.IdadeClassificacao')">
+                    Detalhes
+                </button> |
                 <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
             </td>
         </tr>
 }
     </tbody>
 </table>
+
+<div class="modal fade" id="modalViewDetais" tabindex="-2" aria-labelledby="labelHeaderModal" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 class="modal-title fs-5" id="labelHeaderModal">Detalhes do Filme</h3>
+        </div>
+        <div class="modal-body">
+            <table>
+                <tr>
+                    <td>
+                        <label>Nome:</label>
+                    </td>
+                    <td width="200">
+                        <label id="lblNomeFilme"></label>
+                    </td>
+                    <td>
+                        <label>Classificação:</label>
+                    </td>
+                    <td>
+                        <label id="lblClassificacao"></label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>Capa:</label>
+                    </td>
+                    <td colspan="3">
+                        <img src="~/capasfilmes/default.png" width="200" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>Sinopse:</label>
+                    </td>
+                    <td colspan="3">
+                        <label id="lblSinopse">--</label>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+        </div>
+    </div>
+    </div>
+</div>
+

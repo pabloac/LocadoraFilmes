@@ -4,8 +4,10 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace LocadoraFilmes.Controllers
 {
@@ -54,6 +56,11 @@ namespace LocadoraFilmes.Controllers
             {
                 _filmeRepositorio.Insert(objeto);
 
+                if (objeto.Id > 0 && objeto.FotoCapa != null)
+                {
+                    UploadImagemCapa(objeto);
+                }
+
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -67,8 +74,27 @@ namespace LocadoraFilmes.Controllers
         {
             var objeto = _filmeRepositorio.Get(Id);
 
+            string dirCapas = _configuration.GetSection("AppSettings").GetValue<string>("IMAGENS_CAPAS");
+            string dirServer = Path.Combine(_webHostEnvironment.WebRootPath, dirCapas);
+            string arquivo = string.Concat("/", objeto.Id, ".png");
+
+            if (!System.IO.File.Exists(dirServer + arquivo))
+                ViewBag.Imagem = string.Concat("/default.png");
+            else
+                ViewBag.Imagem = string.Concat(arquivo, "?", RandomString(6));
+
             return View(objeto);
         }
+
+
+        private static Random random = new Random();
+        public static string RandomString(int length)
+        {
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            return new string(Enumerable.Repeat(chars, length)
+              .Select(s => s[random.Next(s.Length)]).ToArray());
+        }
+
 
         // POST: FilmeController/Edit/5
         [HttpPost]
@@ -77,36 +103,7 @@ namespace LocadoraFilmes.Controllers
         {
             try
             {
-                string dirCapas = _configuration.GetSection("AppSettings").GetValue<string>("IMAGENS_CAPAS");
-                string dirServer = Path.Combine(_webHostEnvironment.WebRootPath, dirCapas);
-
-
-
-                if (objeto.FotoCapa != null)
-                {
-                    long id = objeto.Id;//Nome do Arquivo
-
-                    //1- Checar Extensão (no momento apenas PNG)
-                    
-                    var extensao = objeto.FotoCapa.FileName.Split('.')[1];
-                    if (extensao.ToLower() != "png")
-                    {
-                        ModelState.AddModelError("name", string.Concat("Extensão de arquivo incorreta (somente PNG)"));
-                    }
-                    else
-                    {
-                        //Continuar Upload
-                        using (var stream = System.IO.File.Create(dirServer + "/teste.png"))
-                        {
-                            objeto.FotoCapa.CopyTo(stream);
-                        }
-
-                    }
-
-
-
-                }
-
+                UploadImagemCapa(objeto);
 
                 if (ModelState.IsValid)
                 {
@@ -123,6 +120,40 @@ namespace LocadoraFilmes.Controllers
             catch
             {
                 return View();
+            }
+        }
+
+
+        public void UploadImagemCapa(FilmeModel objeto)
+        {
+
+            try
+            {
+                string dirCapas = _configuration.GetSection("AppSettings").GetValue<string>("IMAGENS_CAPAS");
+                string dirServer = Path.Combine(_webHostEnvironment.WebRootPath, dirCapas);
+
+                if (objeto.FotoCapa != null)
+                {
+                    var extensao = objeto.FotoCapa.FileName.Split('.')[1];
+                    if (extensao.ToLower() != "png")
+                    {
+                        ModelState.AddModelError("name", string.Concat("Extensão de arquivo incorreta (somente PNG)"));
+                    }
+                    else
+                    {
+                        string arquivo = string.Concat("/", objeto.Id, ".png");
+
+                        //Continuar Upload (Salvar ou Sobrescrever)
+                        using (var stream = System.IO.File.Create(dirServer + arquivo))
+                        {
+                            objeto.FotoCapa.CopyTo(stream);
+                        }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                ModelState.AddModelError("name", string.Concat("Erro ao realizar o upload da foto."));
             }
         }
 

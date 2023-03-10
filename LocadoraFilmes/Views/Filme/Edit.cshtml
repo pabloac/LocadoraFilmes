@@ -3,7 +3,6 @@
 
 @{
     ViewData["Title"] = "Edição de Filme";
-    var imagePath = @"~/capafilme/1.png";
 }
 
 <h4>Editando Filme</h4>
@@ -29,15 +28,14 @@
                 <span asp-validation-for="IdadeClassificacao" class="text-danger"></span>
             </div>
             <div class="form-group">
-                @*<input type="file" />
-                <br />Atual:<br />
-                <img src="~/capasfilmes/1.png" /> @*todo: Capa*@
                 <label asp-for="FotoCapa" class="control-label"></label>
                 <div class="custom-file">
                     <input asp-for="FotoCapa" class="custom-file-input" id="FotoCapa" />
                     <label class="custom-file-label" for="FotoCapa"></label>
-                </div>
-                
+                </div>    
+            </div>
+            <div class="form-group">
+                <img src="~/capasfilmes@(ViewBag.Imagem)" width="350" />
             </div>
             <div class="form-group">
                 <input type="submit" value="Alterar" class="btn btn-primary" />
